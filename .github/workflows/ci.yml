@@ -33,6 +33,11 @@ analysis:
       if (!approved) {
         core.setFailed("Код-рев’ю не схвалено");
       }
+- name: Count lines of code with Cloc
+run: |
+sudo apt-get install -y cloc
+cloc src/ > cloc-report.txt
+cat cloc-report.txt
 runs-on: ubuntu-latest
 needs: test
 steps:
