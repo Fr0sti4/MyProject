@@ -36,7 +36,7 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run:  pip install -r requirements.txt
 
       - name: Cache SonarQube scanner
         uses: actions/cache@v4
