@@ -63,12 +63,18 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.host.url=https://sonarcloud.io
 
-      - name: Run ESLint via Reviewdog
-        uses: reviewdog/action-eslint@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review
-          level: error
+      - name: Install flake8 and reviewdog
+        run: pip install flake8 reviewdog
+
+      - name: Run flake8 via Reviewdog
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          flake8 \
+            | reviewdog -efm="%f:%l:%c: %m" \
+                        -name="flake8" \
+                        -reporter=github-pr-review \
+                        -level=error
 
   review-check:
     if: github.event_name == 'pull_request' && github.base_ref == 'develop'
